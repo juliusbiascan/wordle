@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const WORD_LENGTH = 5;
+const WORD_LENGTH = 4;
 const HARDCODED_WORDS = [
   { word: "apple", category: "Fruit", hint: "Keeps the doctor away." },
   { word: "grape", category: "Fruit", hint: "Small, round, and used for wine." },
