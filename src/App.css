@@ -89,22 +89,30 @@ h1 {
 /* Responsive */
 @media (max-width: 600px) {
   html, body, #root, .App {
-    height: 100vh;
-    min-height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    width: 100vw;
+    min-width: 100vw;
+    max-width: 100vw;
     overflow: hidden;
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
   }
   .App {
     padding-top: 0;
-    height: 100vh;
-    min-height: 100vh;
-    max-height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
+    max-height: 100dvh;
+    width: 100vw;
+    min-width: 100vw;
+    max-width: 100vw;
     justify-content: flex-start;
     align-items: stretch;
-    width: 100vw;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
   }
   .board {
     flex: 1 1 auto;
@@ -151,6 +159,9 @@ h1 {
     min-height: 0 !important;
     background: rgba(255,255,255,0.92) !important;
     box-shadow: none !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 1 auto !important;
   }
   .MuiBox-root {
     width: 100vw !important;
