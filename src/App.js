@@ -263,7 +263,7 @@ const HARDCODED_WORDS = [
 ];
 export default function App() {
   const [solution, setSolution] = useState("");
-  const [guesses, setGuesses] = useState(Array(6).fill(null));
+  const [guesses, setGuesses] = useState(Array(5).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [wordList, setWordList] = useState([]);
