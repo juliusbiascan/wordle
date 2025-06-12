@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const WORD_LENGTH = 4;
+const WORD_LENGTH = 5;
 const HARDCODED_WORDS = [
   { word: "apple", category: "Fruit", hint: "Keeps the doctor away." },
   { word: "grape", category: "Fruit", hint: "Small, round, and used for wine." },
@@ -262,8 +262,9 @@ const HARDCODED_WORDS = [
   { word: "blues", category: "Color", hint: "Color of the sky." }
 ];
 export default function App() {
+  const MAX_GUESSES = 6;
   const [solution, setSolution] = useState("");
-  const [guesses, setGuesses] = useState(Array(5).fill(null));
+  const [guesses, setGuesses] = useState(Array(MAX_GUESSES).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
   const [gameOver, setGameOver] = useState(false);
   const [wordList, setWordList] = useState([]);
@@ -315,39 +316,38 @@ export default function App() {
       if (gameOver) {
         return;
       }
-
+      // Prevent input if all guesses are used
+      if (guesses.filter(Boolean).length >= MAX_GUESSES) {
+        setGameOver(true);
+        return;
+      }
       if (event.key === "Backspace") {
         setCurrentGuess((g) => g.slice(0, -1));
         return;
       }
-
       if (event.key === "Enter") {
         if (currentGuess.length !== 5) {
           return;
         }
-
         const isExist = wordList.includes(currentGuess);
         if (!isExist) {
           setCurrentGuess("");
           toast("Word not found");
           return;
         }
-
         const newGuesses = [...guesses];
         newGuesses[guesses.findIndex((val) => val == null)] = currentGuess;
         setGuesses(newGuesses);
         setCurrentGuess("");
         const isCorrect = solution === currentGuess;
-        if (isCorrect || newGuesses.filter(Boolean).length === 6) {
+        if (isCorrect || newGuesses.filter(Boolean).length === MAX_GUESSES) {
           setGameOver(true);
         }
         return;
       }
-
       if (currentGuess.length >= 5 || !/^[a-zA-Z]$/.test(event.key)) {
         return;
       }
-
       setCurrentGuess((oldGuess) => oldGuess + event.key.toLowerCase());
     };
 
@@ -402,6 +402,11 @@ export default function App() {
   // Keyboard handler
   const handleKeyboardClick = (key) => {
     if (gameOver) return;
+    // Prevent input if all guesses are used
+    if (guesses.filter(Boolean).length >= MAX_GUESSES) {
+      setGameOver(true);
+      return;
+    }
     if (key === 'back') {
       setCurrentGuess((g) => g.slice(0, -1));
     } else if (key === 'enter') {
@@ -417,7 +422,7 @@ export default function App() {
       setGuesses(newGuesses);
       setCurrentGuess("");
       const isCorrect = solution === currentGuess;
-      if (isCorrect || newGuesses.filter(Boolean).length === 6) {
+      if (isCorrect || newGuesses.filter(Boolean).length === MAX_GUESSES) {
         setGameOver(true);
       }
     } else if (currentGuess.length < 5 && /^[a-zA-Z]$/.test(key)) {
