@@ -262,7 +262,7 @@ const HARDCODED_WORDS = [
   { word: "blues", category: "Color", hint: "Color of the sky." }
 ];
 export default function App() {
-  const MAX_GUESSES = 6;
+  const MAX_GUESSES = 5;
   const [solution, setSolution] = useState("");
   const [guesses, setGuesses] = useState(Array(MAX_GUESSES).fill(null));
   const [currentGuess, setCurrentGuess] = useState("");
@@ -531,7 +531,7 @@ export default function App() {
             </Typography>
           </Box>
           <Box className="board" display="flex" flexDirection="column" gap={isMobile ? 1.5 : 2.5}>
-            {guesses.map((guess, i) => {
+            {guesses.slice(0, MAX_GUESSES).map((guess, i) => {
               const isCurrentGuess = i === guesses.findIndex((val) => val == null);
               return (
                 <Column
