@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
@@ -272,6 +272,7 @@ export default function App() {
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
   const isMobile = useMediaQuery('(max-width:600px)');
+  const appRef = useRef(null);
 
   useEffect(() => {
     const savedScore = localStorage.getItem('wordle_score');
@@ -354,6 +355,29 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleType);
   }, [currentGuess, gameOver, solution, guesses, wordList]);
 
+  // Request fullscreen on double click or on mount (mobile only)
+  useEffect(() => {
+    function requestFullscreen() {
+      const el = appRef.current;
+      if (!el) return;
+      if (document.fullscreenElement) return;
+      if (el.requestFullscreen) el.requestFullscreen();
+      else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+      else if (el.msRequestFullscreen) el.msRequestFullscreen();
+    }
+    // On double click
+    const handler = () => requestFullscreen();
+    const node = appRef.current;
+    if (node) node.addEventListener('dblclick', handler);
+    // On mount for mobile
+    if (window.innerWidth <= 600) {
+      setTimeout(requestFullscreen, 500);
+    }
+    return () => {
+      if (node) node.removeEventListener('dblclick', handler);
+    };
+  }, []);
+
   // Keyboard letters (QWERTY)
   const keyboardRows = [
     ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
@@ -402,7 +426,7 @@ export default function App() {
   };
 
   return (
-    <main className="App" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', minHeight: '100vh', overflowX: 'hidden' }}>
+    <main ref={appRef} className="App" style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', minHeight: '100vh', overflowX: 'hidden' }}>
       <Box display="flex" flexDirection="column" alignItems="center" justifyContent="flex-start" pt={isMobile ? 1 : 5}>
         <Typography
           variant={isMobile ? "h4" : "h2"}
