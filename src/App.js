@@ -473,13 +473,35 @@ export default function App() {
         <Paper elevation={12} sx={{
           p: isMobile ? 2 : 5,
           borderRadius: 6,
-          background: 'rgba(30, 41, 59, 0.98)',
+          background: isMobile
+            ? 'linear-gradient(135deg, rgba(30,41,59,0.98) 80%, rgba(14,165,233,0.10) 100%)'
+            : 'rgba(30, 41, 59, 0.98)',
           minWidth: isMobile ? 0 : 360,
           width: isMobile ? '99vw' : 'auto',
           maxWidth: 440,
-          boxShadow: '0 8px 32px 0 rgba(14,165,233,0.18)',
-          border: '2.5px solid #334155',
+          boxShadow: isMobile
+            ? '0 0 0 4px #0ea5e9, 0 8px 32px 0 #0ea5e9aa, 0 2px 24px 0 #38bdf8cc'
+            : '0 8px 32px 0 rgba(14,165,233,0.18)',
+          border: isMobile
+            ? '3.5px solid #0ea5e9'
+            : '2.5px solid #334155',
+          position: 'relative',
+          overflow: 'hidden',
         }}>
+          {/* Gradient overlay for extra depth on mobile */}
+          {isMobile && (
+            <Box
+              sx={{
+                position: 'absolute',
+                inset: 0,
+                pointerEvents: 'none',
+                borderRadius: 6,
+                background:
+                  'radial-gradient(circle at 60% 20%, rgba(14,165,233,0.10) 0%, rgba(56,189,248,0.08) 60%, transparent 100%)',
+                zIndex: 0,
+              }}
+            />
+          )}
           {showScore && (
             <Box mb={2} textAlign="center">
               <Button
